@@ -54,10 +54,10 @@ EP Table: Patron Eligibility
 
 | Partition ID | State | Valid/Invalid | Input Condition | Expected Return | Expected Behavior |
 |--------------|-------|---------------|----------------|-----------------|------------------|
-| EP 3.1 | Patron NOT Eligible | invalid | validatePatronEligibility() == 3.1 | 3.1 | return error code. Patron is null. |
-| EP 3.2 | Patron NOT Eligible | invalid | validatePatronEligibility() == 3.0 | 3.0 | return error code. Patron is suspended |
-| EP 3.3 | Patron NOT Eligible | invalid | validatePatronEligibility() == 4.0 | 4.0 |return error code. Patron past overdue limit |
-| EP 3.4 | Patron NOT Eligible | invalid | validatePatronEligibility() == 4.1 | 4.1 | return error code. Patron has $10.00 or more in unpaid fines |
+| EP 3.1 | Patron is null | invalid | validatePatronEligibility() == 3.1 | 3.1 | return error code. Patron is null. |
+| EP 3.2 | Patron is suspended | invalid | validatePatronEligibility() == 3.0 | 3.0 | return error code. Patron is suspended |
+| EP 3.3 | Patron past overdue limit | invalid | validatePatronEligibility() == 4.0 | 4.0 |return error code. Patron past overdue limit |
+| EP 3.4 | Patron over fine limit | invalid | validatePatronEligibility() == 4.1 | 4.1 | return error code. Patron has $10.00 or more in unpaid fines |
 | EP 3.5 | Patron is Eligible | Valid | validatePatronEligibility() == 0.0 | success | Patron is allowed to checkout a book |
 
 
@@ -74,9 +74,9 @@ EP Tables: Success Warnings
 
 | Partition ID | State | Valid/Invalid | Input Condition | Expected Return | Expected Behavior |
 |--------------|-------|---------------|----------------|-----------------|------------------|
-| EP 5.1 | Success w/ near limit warning | valid | all conditions allow checkout AND praton.getCheckoutCount() is within 2 books patron.getMaxCheckoutLimit() | 1.0 | patron checkout book. patron within 2 of max checkout limit after this checkout|
-| EP 5.1 | Success w/ overdue warning | valid | all conditions allow checkout AND patron.getOverdueCount() <= 2 | 1.1 | patron checkout book. patron has 1-2 overdue books|
-| EP 5.1 | Success | valid | all conditions allow checkout AND patron is NOT near checkout limit AND does not have overdue books | 0.0 | book checked out normally |
+| EP 5.1 | Success w/ near limit warning | valid | all conditions allow checkout AND praton.getCheckoutCount() is within 2 books patron.getMaxCheckoutLimit() | 1.1 | patron checkout book. patron within 2 of max checkout limit after this checkout|
+| EP 5.2 | Success w/ overdue warning | valid | all conditions allow checkout AND patron.getOverdueCount() <= 2 | 1.0 | patron checkout book. patron has 1-2 overdue books|
+| EP 5.3 | Success | valid | all conditions allow checkout AND patron is NOT near checkout limit AND does not have overdue books | 0.0 | book checked out normally |
 
 ---
 
@@ -144,10 +144,26 @@ At least some of your tests should verify observable state changes, not just ret
 
 | Test ID Name | EP/BVA | Input Description | Expected Return | Expected State Changes | Checkout0 | Checkout1 | Checkout2 | Checkout3 |
 |--------------|--------|-------------------|-----------------|------------------------|-----------|-----------|-----------|-----------|
-| T1 testUnavailableBook | EP 1.1 | Book unavailable (0 copies), eligible patron | 2.0 | No state change | ✓ | ✓ | ✗ | ✓ |
-| T2 testBookAvailable | EP 1.2 | Book available (1+ copies), eligible patron, no warnings normal checkout | 0.0 | Patron map updated; copies of book change | ✗ | ✗ | ✓ | ✓ |
-
-(Add rows until you have at least 20.)
+| T1 testUnavailableBook | EP 1.1/BVA 2.1 | Book unavailable (0 copies), eligible patron | 2.0 | No state change | ✓ | ✓ | ✗ | ✓ |
+| T2 testBookAvailable | EP 1.2/BVA 2.2 | Book available (1+ copies), eligible patron, no warnings normal checkout | 0.0 | Patron map updated; copies of book change | ✗ | ✗ | ✓ | ✓ |
+| T3 testOverdueAbove | EP 3.3 / BVA 1.4 | overdueCount = 4; normal book, eligible patron otherwise | 4.0 | No state change |  |  |  |  |
+| T4 testOverdueAt | EP 3.3 / BVA 1.3 | overdueCount = 3; normal book, eligible patron otherwise | 4.0 | No state change |  |  |  |  |
+| T5 testOverdueWarningHigh | EP 4.2 / BVA 1.2 | overdueCount = 2, normal book, eligible patron otherwise  | 1.0 | Checkout occurs: availableCopies decrease by 1; Overdue warning displayed |  |  |  |  |
+| T6 testOverdueWarningLow | EP 5.2 / BVA 1.5 | overdueCount = 1; normal book, eligible patron otherwise  | 1.0 | Checkout occurs: availableCopies decrease by 1; Overdue warning displayed  |  |  |  |  |
+| T7 testOverdueBelow | EP 5.3 / BVA 1.1 | overdueCount = 0; normal book, eligible patron otherwise   | 0.0 | Checkout occurs: availableCopies decrease by 1 |  |  |  |  |
+| T8 testCheckoutLimitAbove | EP 4.3 / BVA 4.3 | getCheckoutCount() = MAX + 1  | 3.2 | No state change |  |  |  |  |
+| T9 testCheckoutLimitBelow | EP 5.3 / BVA 4.4 | getCheckoutCount() <= MAX - 3  | 0.0 | Checkout occurs: availableCopies decrease by 1 |  |  |  |  |
+| T10 testCheckoutLimitWarningHigh | EP 5.1 / BVA 4.2 | getCheckoutCount() = Max - 1 OR getCheckoutCount() = Max - 2 | 4.0 | Checkout occurs: availableCopies decrease by 1; Checkout warning displayed  |  |  |  |  |
+| T11 testCheckoutLimitAt | EP 4.3 / BVA 4.1 | getCheckoutCount() = MAX  | 3.2 | No state change |  |  |  |  |
+| T12 testFineThresholdBelow | EP 5.3 / BVA 3.3 | 9.99 | 0.0 | Checkout occurs: availableCopies decrease by 1; patron.getCheckedOutBooks() is updated  |  |  |  |  |
+| T13 testFineThresholdAt | EP 3.4 / BVA 3.1 | fines = 10 | 4.1 | No state change |  |  |  |  |
+| T14 testFineThresholdAbove | EP 3.4 / BVA 3.2 | fines = 10.01 | 4.1 | No state change |  |  |  |  |
+| T15 testCheckoutRenewal | EP 4.1 | | 0.1 | Checkout occurs; patron.getCheckedOutBooks() is updated |  |  |  |  |
+| T16 testNormalSuccess | EP 5.3 | overdue=0, fines < 10, availableCopies > 0, not-renewal| 0.0 | Checkout occurs: availableCopies decrease by 1; patron.getCheckedOutBooks() is updated |  |  |  |  |
+| T17 testReferenceBook | EP 1.2 | book.isReferenceOnly() == true AND patron is eligible  | 5.0 | No state change |  |  |  |  |
+| T18 testPatronSuspension |EP 3.2 | patronType = suspended | 3.0 | No state change |  |  |  |  |
+| T19 testPatronNull |EP 3.1| patron = null | 3.1 | No state change |  |  |  |  |
+| T20 testBookNull | EP 1.1 | book = null, patron eligible | 2.1 | No state change |  |  |  |  |
 
 ---
 
@@ -197,6 +213,7 @@ Compare the four implementations:
 **What was the most challenging aspect of this assignment?**
 
 **How did you decide on your EP and BVA?**
+I reviewed the validation order and identified common themes. Then broke it down to limits and boundaries that change the state of the program.
 
 **Describe one test where checking only the return value would NOT have been sufficient to detect a bug.**
 
