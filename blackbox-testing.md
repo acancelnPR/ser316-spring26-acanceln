@@ -145,25 +145,27 @@ At least some of your tests should verify observable state changes, not just ret
 | Test ID Name | EP/BVA | Input Description | Expected Return | Expected State Changes | Checkout0 | Checkout1 | Checkout2 | Checkout3 |
 |--------------|--------|-------------------|-----------------|------------------------|-----------|-----------|-----------|-----------|
 | T1 testUnavailableBook | EP 1.1/BVA 2.1 | Book unavailable (0 copies), eligible patron | 2.0 | No state change | ✓ | ✓ | ✗ | ✓ |
-| T2 testBookAvailable | EP 1.2/BVA 2.2 | Book available (1+ copies), eligible patron, no warnings normal checkout | 0.0 | Patron map updated; copies of book change | ✗ | ✗ | ✓ | ✓ |
-| T3 testOverdueAbove | EP 3.3 / BVA 1.4 | overdueCount = 4; normal book, eligible patron otherwise | 4.0 | No state change |  |  |  |  |
-| T4 testOverdueAt | EP 3.3 / BVA 1.3 | overdueCount = 3; normal book, eligible patron otherwise | 4.0 | No state change |  |  |  |  |
-| T5 testOverdueWarningHigh | EP 4.2 / BVA 1.2 | overdueCount = 2, normal book, eligible patron otherwise  | 1.0 | Checkout occurs: availableCopies decrease by 1; Overdue warning displayed |  |  |  |  |
-| T6 testOverdueWarningLow | EP 5.2 / BVA 1.5 | overdueCount = 1; normal book, eligible patron otherwise  | 1.0 | Checkout occurs: availableCopies decrease by 1; Overdue warning displayed  |  |  |  |  |
-| T7 testOverdueBelow | EP 5.3 / BVA 1.1 | overdueCount = 0; normal book, eligible patron otherwise   | 0.0 | Checkout occurs: availableCopies decrease by 1 |  |  |  |  |
-| T8 testCheckoutLimitAbove | EP 4.3 / BVA 4.3 | getCheckoutCount() = MAX + 1  | 3.2 | No state change |  |  |  |  |
-| T9 testCheckoutLimitBelow | EP 5.3 / BVA 4.4 | getCheckoutCount() <= MAX - 3  | 0.0 | Checkout occurs: availableCopies decrease by 1 |  |  |  |  |
-| T10 testCheckoutLimitWarningHigh | EP 5.1 / BVA 4.2 | getCheckoutCount() = Max - 1 OR getCheckoutCount() = Max - 2 | 4.0 | Checkout occurs: availableCopies decrease by 1; Checkout warning displayed  |  |  |  |  |
-| T11 testCheckoutLimitAt | EP 4.3 / BVA 4.1 | getCheckoutCount() = MAX  | 3.2 | No state change |  |  |  |  |
-| T12 testFineThresholdBelow | EP 5.3 / BVA 3.3 | 9.99 | 0.0 | Checkout occurs: availableCopies decrease by 1; patron.getCheckedOutBooks() is updated  |  |  |  |  |
-| T13 testFineThresholdAt | EP 3.4 / BVA 3.1 | fines = 10 | 4.1 | No state change |  |  |  |  |
-| T14 testFineThresholdAbove | EP 3.4 / BVA 3.2 | fines = 10.01 | 4.1 | No state change |  |  |  |  |
-| T15 testCheckoutRenewal | EP 4.1 | | 0.1 | Checkout occurs; patron.getCheckedOutBooks() is updated |  |  |  |  |
-| T16 testNormalSuccess | EP 5.3 | overdue=0, fines < 10, availableCopies > 0, not-renewal| 0.0 | Checkout occurs: availableCopies decrease by 1; patron.getCheckedOutBooks() is updated |  |  |  |  |
-| T17 testReferenceBook | EP 1.2 | book.isReferenceOnly() == true AND patron is eligible  | 5.0 | No state change |  |  |  |  |
-| T18 testPatronSuspension |EP 3.2 | patronType = suspended | 3.0 | No state change |  |  |  |  |
-| T19 testPatronNull |EP 3.1| patron = null | 3.1 | No state change |  |  |  |  |
-| T20 testBookNull | EP 1.1 | book = null, patron eligible | 2.1 | No state change |  |  |  |  |
+| T2 testBookAvailable | EP 1.2/BVA 2.2 | Book available (1+ copies), eligible patron, no warnings normal checkout | 0.0 | Patron map updated; copies of book change | ✓ |  ✗  | ✓ | ✓ |
+| T3 testOverdueAbove | EP 3.3 / BVA 1.4 | overdueCount = 4; normal book, eligible patron otherwise | 4.0 | No state change |✓ |✓ | ✓  |✓ |
+| T4 testOverdueAt | EP 3.3 / BVA 1.3 | overdueCount = 3; normal book, eligible patron otherwise | 4.0 | No state change |✓ |✓ | ✓  |✓ |
+| T5 testOverdueWarningHigh | EP 4.2 / BVA 1.2 | overdueCount = 2, normal book, eligible patron otherwise  | 1.0 | Checkout occurs: availableCopies decrease by 1; Overdue warning displayed |✗|✗|✓|✗|
+| T6 testOverdueWarningLow | EP 5.2 / BVA 1.5 | overdueCount = 1; normal book, eligible patron otherwise  | 1.0 | Checkout occurs: availableCopies decrease by 1; Overdue warning displayed  |✓|✗|✗|✗|
+| T7 testOverdueBelow | EP 5.3 / BVA 1.1 | overdueCount = 0; normal book, eligible patron otherwise   | 0.0 | Checkout occurs: availableCopies decrease by 1 |✗|✗|✓|✓|
+| T8 testCheckoutLimitAbove | EP 4.3 / BVA 4.3 | getCheckoutCount() = MAX + 1  | 3.2 | No state change|✓ |✓ | ✓  |✓ |
+| T9 testCheckoutLimitWarningHigh | EP 5.1 / BVA 4.2 | getCheckoutCount() = Max - 1; | 1.1 | Checkout occurs: availableCopies decrease by 1; Checkout warning displayed|✓ |X | ✓  |✓ |
+| T10 testCheckoutLimitAt | EP 4.3 / BVA 4.1 | getCheckoutCount() = MAX  | 3.2 | No state change |✓ |X | ✓  |✓ |
+| T11 testFineThresholdNear | EP 5.3 / BVA 3.3 | fines = 9.99 | 0.0 | Checkout occurs: availableCopies decrease by 1; patron.getCheckedOutBooks() is updated  |✓ |X | ✓  |✓ |
+| T12 testFineThresholdCalculates | EP 5.3 / BVA 3.3 | addfine(10.01); payfine(0.02) | 0.0 | Checkout occurs: availableCopies decrease by 1; patron.getCheckedOutBooks() is updated  |✓ |✓ | ✓  |✓ |
+| T13 testFineThresholdAt | EP 3.4 / BVA 3.1 | fines = 10 | 4.1 | No state change |✓ |✓ | ✓  |✓ |
+| T14 testFineThresholdAbove | EP 3.4 / BVA 3.2 | fines = 10.01 | 4.1 | No state change |✓ |✓ | ✓  |✓ |
+| T15 testCheckoutRenewal | EP 4.1 | overdue=0, fines < 10, availableCopies > 0,  | 0.1 | Checkout occurs; patron.getCheckedOutBooks() is updated |✓|✓|✗|✗|
+| T16 testNormalSuccessAndReturn| EP 5.3 | overdue=0, fines < 10, availableCopies > 0, patron.hadcheckedoutbook()=true| 0.0 | Checkout occurs: availableCopies stay the same after return; patron.getCheckedOutBooks() is updated 
+|✗|✗|✓|✓|
+| T17 testReferenceBook | EP 1.2 | book.isReferenceOnly() == true AND patron is eligible  | 5.0 | No state change |X |✓ | ✓  |✓ |
+| T18 testPatronSuspension |EP 3.2 | patronType = suspended | 3.0 | No state change |✓ |✓ | ✓  |✓ |
+| T19 testPatronNull |EP 3.1| patron = null | 3.1 | No state change |✓ |✓ | ✓  |✓ |
+| T20 testBookNull | EP 1.1 | book = null, patron eligible | 2.1 | No state change |✓ |✓ | ✓  |✓ |
+
 
 ---
 
@@ -171,49 +173,93 @@ At least some of your tests should verify observable state changes, not just ret
 
 ### Easter Eggs Found
 List any easter egg messages you observed:
-- 
-- 
+- [EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+- [EASTER EGG #17]: 'The happy path matters too.'
+- [EASTER EGG #19]: 'Availability testing finds the books that aren't there.'
+- [EASTER EGG #19]: 'Can't check out what isn't there.'
+- [EASTER EGG #19]: 'Good EP testing checks all partitions.'
+- [EASTER EGG #19]: 'Testing the sad path matters.'
+- [EASTER EGG #17]: 'The happy path matters too.'
+- [EASTER EGG #15.2]: ...xvFZjo5PgG0 (test renewal to complete!)
+- [EASTER EGG #10.1/3]: 'Testing can show the presence of bugs,'
+- [EASTER EGG #10.3]: '- Dijkstra'
+- [EASTER EGG #10.2]: 'but never their absence'
+- [EASTER EGG #10.2/3]: 'but never their absence'
+- [EASTER EGG #15.1]: https://www.youtube.com/watch?v=xvFZjo5PgG0
+- [EASTER EGG #13]: 'Limits exist to be thoroughly tested.'
+- [EASTER EGG #13]: 'Boundaries are where bugs hide.'
+- [EASTER EGG #13]: 'The difference between theory and practice is that in theory, there is no difference.'
+- [EASTER EGG #14]: 'A book renewed is a book re-loved.'
+- [EASTER EGG #14]: 'Renewing a book is like giving it a second chance.'
+- [EASTER EGG #20]: 'Reference books are meant to be consulted, not carried home.'
+- [EASTER EGG #18]: 'Null checking: because null pointer exceptions are not fun.'
+- [EASTER EGG #18]: 'Remember to test all the edge cases.'
+- [EASTER EGG #18]: 'The best code is no code at all... but this isn't it.'
+
 
 ### Implementation Results
 
 | Implementation | Bugs Found (count) |
 |----------------|---------------------|
-| Checkout0      | |
-| Checkout1      | |
-| Checkout2      | |
-| Checkout3      | |
+| Checkout0      | 4|
+| Checkout1      | 4|
+| Checkout2      | 3|
+| Checkout3      | 3|
 
 ### Bugs Discovered
 List distinct bugs you identified for each implementation. Each bug must cite at least one test case that revealed it.
 
 **Checkout0:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: [Book should be unavailable after checkout] — Revealed by: [T2]
+- Bug 2: [Book availability should be -1] — Revealed by: [T5]
+- Bug 3: [Book availability should be the same after return] — Revealed by: [T0]
+- Bug 4: [Expected code 5.0 for reference book] — Revealed by: [17]
 
 **Checkout1:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: [Checked out list not updating when available book] — Revealed by: [T2]
+- Bug 2: [Patron should have book in list, but doesn't] — Revealed by: [T5]
+- Bug 3: [Expected code 3.2 for patron AT checkout limit] — Revealed by: [10]
+- Bug 4: [Book should be available after return] — Revealed by: [T16]
+
 
 **Checkout2:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: [Availability testing finds the books that aren't there] — Revealed by: [T1]
+- Bug 2: [Book availability should be -1] — Revealed by: [T6]
+- Bug 3: [Expected successful renewal (0.1)] — Revealed by: [T15]
+
 
 **Checkout3:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: [Expected error code 1.0 for patron near Overdue limit, but returns 0.0] — Revealed by: [T5]
+- Bug 2: [Book availability should be -1] — Revealed by: [T6]
+- Bug 3: [Book availability should be the same after renewal] — Revealed by: [T15]
+
 
 ### Comparative Analysis
 Compare the four implementations:
 - Which bugs are most critical (cause the worst failures)?
-- Which implementation would you use if you had to choose?
+ 	When a patron should have a specific book checked out, but doesn't.
+ 	Also, finding books that aren't actually unavailable.
+
+- Which implementation would you use if you had to choose? 
+	I would choose implementation 3
 - Why? Justify your choice considering bug severity and frequency.
+	The book availability inaccuracy is a bug that affects patrons but does not break the system or cause severe consequences for the business.
+	The last 2 bugs I found are similar, and I believe they have the same root cause.
 
 ---
 
 ## Part 5: Reflection
 
 **Which testing technique was most effective for finding bugs?**
+	Testing the state of the objects in question was most effective because the return code does not indicate the other states of the system.
 
 **What was the most challenging aspect of this assignment?**
+	Designing tests that change multiple states of the system.
 
 **How did you decide on your EP and BVA?**
-I reviewed the validation order and identified common themes. Then broke it down to limits and boundaries that change the state of the program.
+I reviewed the validation order and identified common themes. Then broke it down into limits and boundaries that change the program's state.
 
 **Describe one test where checking only the return value would NOT have been sufficient to detect a bug.**
+T2-testBookAvailable: Just looking at the return code, you would not have noticed that the patron does not have the book in their inventory.
+
 
