@@ -54,7 +54,9 @@ public class Main {
 
         System.out.println("--- Scenario 3: Patron with fines ---");
         student.addFine(12.50);
-        System.out.println("Student has $12.50 in fines");
+        System.out.printf("Student has $%.2f in fines\n", student.getFineBalance());
+        student.payFine(-2.0);
+        System.out.printf("Student has $%.2f in fines\n", student.getFineBalance());
         System.out.println("Trying to checkout: " + book1.getTitle());
         result = checkout.checkoutBook(book1, student);
         System.out.println("Result code: " + result);
