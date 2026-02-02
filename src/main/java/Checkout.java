@@ -140,6 +140,47 @@ public class Checkout {
      * @return Status code indicating result (see above)
      */
     public double checkoutBook(Book book, Patron patron) {
+        double patronEligibility = validatePatronEligibility(patron);
+
+        if (patronEligibility != 0.0){
+            return patronEligibility;
+        } else if (book == null) {
+            return 2.1;
+        } else if (book.isReferenceOnly()) {
+            return 5.0;
+        }
+
+        String isbn = book.getIsbn();
+        LocalDate dueDate = LocalDate.now();
+        dueDate = dueDate.plusDays(patron.getLoanPeriodDays());
+
+        //Success w/ renewal
+        if (patron.hasBookCheckedOut(isbn)){
+            patron.addCheckedOutBook(isbn, dueDate);
+            return 0.1;
+        } else if (!book.isAvailable()) {
+            return 2.0;
+        }
+
+        //success w/ warnings - no renewal
+        int checkoutCount = patron.getCheckoutCount();
+        int checkoutLimit = patron.getMaxCheckoutLimit();
+        if (checkoutCount >= checkoutLimit){
+            return 3.2;
+        }
+        book.checkout();
+        patron.addCheckedOutBook(isbn, dueDate);
+
+        int overdueCount = patron.getOverdueCount();
+
+        if (overdueCount > 0){
+//            System.out.println("patron has 1-2 books overdue");
+            return 1.0;
+        }else if (checkoutCount >= (checkoutLimit - 2)) {
+//            System.out.println("patron within 2 of max checkout limit after this checkout");
+            return 1.1;
+        }
+
 //        Implement me in Assignment 3
         // Normal success
         return 0.0;
