@@ -151,8 +151,7 @@ public class Checkout {
         }
 
         String isbn = book.getIsbn();
-        LocalDate dueDate = LocalDate.now();
-        dueDate = dueDate.plusDays(patron.getLoanPeriodDays());
+        LocalDate dueDate = LocalDate.now().plusDays(patron.getLoanPeriodDays());
 
         //Success w/ renewal
         if (patron.hasBookCheckedOut(isbn)){
@@ -168,15 +167,18 @@ public class Checkout {
         if (checkoutCount >= checkoutLimit){
             return 3.2;
         }
-        book.checkout();
         patron.addCheckedOutBook(isbn, dueDate);
+        book.checkout();
 
         int overdueCount = patron.getOverdueCount();
 
-        if (overdueCount > 0){
+        if (overdueCount >= 1 && overdueCount <= 2){
 //            System.out.println("patron has 1-2 books overdue");
             return 1.0;
-        }else if (checkoutCount >= (checkoutLimit - 2)) {
+        }
+        checkoutCount = patron.getCheckoutCount();
+
+        if (checkoutCount >= (checkoutLimit - 2)) {
 //            System.out.println("patron within 2 of max checkout limit after this checkout");
             return 1.1;
         }

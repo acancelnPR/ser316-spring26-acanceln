@@ -338,7 +338,7 @@ public class CheckoutBlackBoxSample {
                 "Test Author", Book.BookType.FICTION, 5);
         Book book4 = new Book("978-0-128556-78-9", "Test Book4",
                 "Test Author", Book.BookType.FICTION, 5);
-        Book checkBook = new Book("978-0-128556-98-9", "Test Book4",
+        Book checkBook = new Book("978-0-128556-98-9", "Test Book5",
                 "Test Author", Book.BookType.FICTION, 5);
 
         Patron patron = new Patron("P001", "Test Patron", "test@example.com",
@@ -772,8 +772,12 @@ public class CheckoutBlackBoxSample {
         patron.setAccountSuspended(false);
 
 
+
         checkout.addBook(book); // adding the book to the library
         checkout.registerPatron(patron); // adding a patrol to the system
+
+        checkout.isPatronType("STUDENT",checkout.getPatrons().get("P001").getType());
+
 
         // Execute checkout
         int availableCopiesBefore = book.getAvailableCopies();
