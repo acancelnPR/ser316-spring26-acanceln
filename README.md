@@ -2,7 +2,6 @@
 
 ## Basic Commands
 
-```bash
 # Run the library demo application
 ./gradlew run
 
@@ -23,11 +22,9 @@
 
 # Build the project
 ./gradlew build
-```
 
 ## Static Analysis (Assignments 4+)
 
-```bash
 # Run Checkstyle
 ./gradlew checkstyleMain -PstaticAnalysis=true
 
@@ -36,16 +33,13 @@
 
 # Run all static analysis checks
 ./gradlew check -PstaticAnalysis=true
-```
 
 ## Code Coverage (Assignment 3+)
 
-```bash
 # Generate JaCoCo coverage report (runs automatically after tests)
 ./gradlew test
 
 # View report at: build/reports/jacoco/test/html/index.html
-```
 
 ## Test Reports
 
@@ -58,3 +52,8 @@ After running tests, view HTML reports at:
 
 - Java JDK 18 or higher
 - Gradle 8.x (wrapper included)
+
+# acanceln
+Remote repo for ASU SER:316.
+
+Check branch Blackbox for assignment2. Main/Master is not updated yet.
