@@ -115,11 +115,11 @@ public class Patron {
      * @return Loan period in days
      */
     public int getLoanPeriodDays() {
-        if(type==PatronType.FACULTY)return 60;
-        else if(type==PatronType.STAFF)return 45;
-        else if(type==PatronType.STUDENT)return 30;
-        else if(type==PatronType.PUBLIC)return 21;
-        else if(type==PatronType.CHILD)return 14;
+        if (type == PatronType.FACULTY) return 60;
+        else if (type == PatronType.STAFF) return 45;
+        else if (type == PatronType.STUDENT) return 30;
+        else if (type == PatronType.PUBLIC) return 21;
+        else if (type == PatronType.CHILD) return 14;
         else return 21;
     }
 

@@ -26,24 +26,24 @@ public class CheckoutBlackBoxSample {
 
     private Checkout checkout;
 
-    /**
-     * Provides the list of Checkout classes to test.
-     * Each test will run against ALL implementations.
-     */
-    @SuppressWarnings("unchecked")
-    static Stream<Class<? extends Checkout>> checkoutClassProvider() {
-        return (Stream<Class<? extends Checkout>>) Stream.of(
-                Checkout0.class,
-                Checkout1.class,
-                Checkout2.class,
-                Checkout3.class
-        );
-    }
-
-    // Uncomment when you implement the method in assign 3 and comment the above
+//    /**
+//     * Provides the list of Checkout classes to test.
+//     * Each test will run against ALL implementations.
+//     */
+//    @SuppressWarnings("unchecked")
 //    static Stream<Class<? extends Checkout>> checkoutClassProvider() {
-//        return Stream.of(Checkout.class);
+//        return (Stream<Class<? extends Checkout>>) Stream.of(
+//                Checkout0.class,
+//                Checkout1.class,
+//                Checkout2.class,
+//                Checkout3.class
+//        );
 //    }
+
+//     Uncomment when you implement the method in assign 3 and comment the above
+    static Stream<Class<? extends Checkout>> checkoutClassProvider() {
+        return Stream.of(Checkout.class);
+    }
 
 
     /**
@@ -249,7 +249,6 @@ public class CheckoutBlackBoxSample {
         // Setup: Create book
         Book book = new Book("978-0-123456-78-9", "Test Book",
                 "Test Author", Book.BookType.FICTION, 5);
-        book.setAvailableCopies(4);  // We are pretending it has been checked out by others and is not available anymore
 
         Patron patron = new Patron("P001", "Test Patron", "test@example.com",
                 Patron.PatronType.STUDENT);
@@ -339,7 +338,7 @@ public class CheckoutBlackBoxSample {
                 "Test Author", Book.BookType.FICTION, 5);
         Book book4 = new Book("978-0-128556-78-9", "Test Book4",
                 "Test Author", Book.BookType.FICTION, 5);
-        Book checkBook = new Book("978-0-128556-98-9", "Test Book4",
+        Book checkBook = new Book("978-0-128556-98-9", "Test Book5",
                 "Test Author", Book.BookType.FICTION, 5);
 
         Patron patron = new Patron("P001", "Test Patron", "test@example.com",
@@ -773,8 +772,12 @@ public class CheckoutBlackBoxSample {
         patron.setAccountSuspended(false);
 
 
+
         checkout.addBook(book); // adding the book to the library
         checkout.registerPatron(patron); // adding a patrol to the system
+
+        checkout.isPatronType("STUDENT",checkout.getPatrons().get("P001").getType());
+
 
         // Execute checkout
         int availableCopiesBefore = book.getAvailableCopies();
