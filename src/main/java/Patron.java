@@ -148,7 +148,6 @@ public class Patron {
     public void addFine(double amount) {
         if (amount > 0) {
             this.fines += amount;
-        } else {
         }
     }
 
@@ -159,8 +158,13 @@ public class Patron {
      * @return Remaining balance
      */
     public double payFine(double amount) {
-        this.fines = Math.max(0, this.fines - amount);
-        return this.fines;
+        if (amount > 0){
+            this.fines = Math.max(0, this.fines - amount);
+            return this.fines;
+        }else{
+            System.out.println("Sorry payment was not successful. Enter positive number greater than zero.");
+            return this.fines;
+        }
     }
 
     /**

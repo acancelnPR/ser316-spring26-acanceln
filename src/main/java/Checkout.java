@@ -12,7 +12,7 @@ import java.util.Map;
 public class Checkout {
     public static double MAX_FINE_AMOUNT = 25.0;
 
-    private Map<String, Book> bookList; // ISBN -> Book
+    private Map<String, Book> bookMap; // ISBN -> Book
     private Map<String, Patron> patrons; // PatronID -> Patron
     private List<Transaction> history; //
 
@@ -36,13 +36,13 @@ public class Checkout {
     }
 
     public Checkout() {
-        this.bookList = new HashMap<>();
+        this.bookMap = new HashMap<>();
         this.patrons = new HashMap<>();
         this.history = new ArrayList<>();
     }
 
     public void addBook(Book book) {
-        bookList.put(book.getIsbn(), book);
+        bookMap.put(book.getIsbn(), book);
     }
 
     public void registerPatron(Patron patron) {
@@ -259,7 +259,7 @@ public class Checkout {
             return -1.0;
         }
 
-        Book book = bookList.get(isbn);
+        Book book = bookMap.get(isbn);
         if (book == null) {
             return -1.0;
         }
@@ -312,7 +312,7 @@ public class Checkout {
         int looped = 0;
 
         // Loop through all books in inventory
-        for (Book b : bookList.values()) {
+        for (Book b : bookMap.values()) {
 
             if (b == null) {
                 continue;
@@ -337,7 +337,7 @@ public class Checkout {
     }
 
     public Map<String, Book> getInventory() {
-        return bookList;
+        return bookMap;
     }
 
     public Map<String, Patron> getPatrons() {
