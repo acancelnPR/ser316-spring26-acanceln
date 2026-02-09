@@ -103,30 +103,34 @@ Not for checkout.java. The issues fixed were in other classes, such as patron.ja
 ### Merge Strategy
 
 **How did you merge Review and StaticAnalysis into Dev?**
+I merged review first = fast-forward. Then, merge the static analysis, which had some conflicts to resolve.
 
 
-**Merge conflicts encountered:** _____
+**Merge conflicts encountered:** 8 ~
 
 ### Dev Branch Quality After Merge
 
-**Checkstyle violations:** _____
-**SpotBugs issues:** _____
+**Checkstyle violations:** 8
+**SpotBugs issues:** 0
 
 **Did quality improve or worsen? Explain:**
+yes, I have the resolved issues from Review branch and fixed bugs + style issues from static analysis
 
 
-**Build successful:** [Yes/No]
+**Build successful:** [Yes]
 
 ---
 
 ## Part 6: Reflection
 
 **Do you think your code got better through this process?**
+absolutely, yes
 
 
 **In what order would you use these quality practices in the future?**
 
+First static analysis, then review.
 
 **Most valuable lesson:**
 
-
+Use static analysis as a continuous improvement tool. It significantly enhances the maintainability of code
