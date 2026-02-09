@@ -71,7 +71,7 @@ public class Patron {
     }
 
     public Map<String, LocalDate> getCheckedOutBooks() {
-        return bookMap;
+        return new HashMap<>(bookMap);
     }
 
     public int getCheckoutCount() {
@@ -158,10 +158,10 @@ public class Patron {
      * @return Remaining balance
      */
     public double payFine(double amount) {
-        if (amount > 0){
+        if (amount > 0) {
             this.fines = Math.max(0, this.fines - amount);
             return this.fines;
-        }else{
+        } else {
             System.out.println("Sorry payment was not successful. Enter positive number greater than zero.");
             return this.fines;
         }
@@ -220,6 +220,7 @@ public class Patron {
 
     @Override
     public String toString() {
-        return patronId+"-"+name+"("+type+")"+"[Books:"+bookMap.size()+"/"+getMaxCheckoutLimit()+",Fines:$"+ fines +"]";
+        return patronId + "-" + name + "(" + type + ")" + "[Books:" + bookMap.size() + "/"
+                + getMaxCheckoutLimit() + ",Fines:$" + fines + "]";
     }
 }
