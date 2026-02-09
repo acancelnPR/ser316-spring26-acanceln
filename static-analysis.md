@@ -79,22 +79,22 @@
 
 | Branch | Main Violations | Test Violations | Total |
 |--------|----------------|-----------------|-------|
-| Blackbox | | | |
-| Review | | | |
-| StaticAnalysis (initial) | | | |
-| StaticAnalysis (after fixes) | | | |
+| Blackbox | 27|4 | 31|
+| Review |27|4 | 31|
+| StaticAnalysis (initial) |36 |34 | 70|
+| StaticAnalysis (after fixes) | 8| 34| 42|
 
 ### SpotBugs Comparison
 
 | Branch | Main Bugs | Test Bugs | Total |
 |--------|-----------|-----------|-------|
-| Blackbox | | | |
-| Review | | | |
-| StaticAnalysis (initial) | | | |
-| StaticAnalysis (after fixes) | | | |
+| Blackbox |6 |0 |6 |
+| Review |6 |0 |6 |
+| StaticAnalysis (initial) |6 |0 |6 |
+| StaticAnalysis (after fixes) | 0|0 |0 |
 
 **Did Review branch improve code quality compared to Blackbox?**
-
+Not for checkout.java. The issues fixed were in other classes, such as patron.java and book.java. So checkout.java does not show progress.
 
 ---
 
