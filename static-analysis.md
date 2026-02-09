@@ -1,8 +1,8 @@
 # Static Analysis Report - Assignment 4
 
-**Student Name:** [Your Name]
-**ASU ID:** [Your ASU ID]
-**Date:** [Date]
+**Student Name:** Andres Cancel
+**ASU ID:** acanceln
+**Date:** 2/8/2026
 
 ---
 
@@ -10,13 +10,26 @@
 
 **Which branches fail on GitHub Actions? Explain why.**
 
-1. **Branch:** ___________
-   - **Status:** Passing / Failing
-   - **Reason:**
+1. **Branch:** main
+   - **Status:** Failing
+   - **Reason:failed builds because some tests are not passing**
 
-2. **Branch:** ___________
+2. **Branch:** Blackbox
+   - **Status:**  Failing
+   - **Reason:failed builds because some tests are not passing**
+
+3. **Branch:** Review 
    - **Status:** Passing / Failing
-   - **Reason:**
+   - **Reason:failed builds because some tests are not passing**
+
+4. **Branch:** Whitebox
+   - **Status:** Passing
+   - **Reason:all tests passed**
+
+5. **Branch:** StaticAnalysis
+   - **Status:** Passing
+   - **Reason:all tests passed**
+
 
 ---
 
@@ -24,13 +37,14 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Main source violations:** _____
-**Test source violations:** _____
-
+**Main source violations:** 20 ~
+**Test source violations:** 174
+(I did not count the initial violation, so I am estimating.)
+(I was looking at the PDF while doing this part and not this md document)
 ### After Fixing Issues
 
-**Main source violations:** _____
-**Violations fixed:** _____
+**Main source violations:** 8
+**Violations fixed:** 15 ~
 
 ---
 
