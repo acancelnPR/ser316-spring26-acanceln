@@ -60,15 +60,14 @@ public class Checkout {
     private static class Transaction {
         Patron patron;
         Book book;
-        LocalDate checkoutDate;
-        LocalDate dueDate;
+        //          SER316 TASK 2 SPOTBUGS FIX
+
         LocalDate returnDate;
 
         Transaction(Patron patron, Book book, LocalDate checkoutDate, LocalDate dueDate) {
             this.patron = patron;
             this.book = book;
-            this.checkoutDate = checkoutDate;
-            this.dueDate = dueDate;
+//          SER316 TASK 2 SPOTBUGS FIX
             this.returnDate = null;
         }
     }
@@ -344,7 +343,7 @@ public class Checkout {
             return false;
         }
 
-        return typeString == expectedType.toString();
+        return typeString.equals(expectedType.toString());//          SER316 TASK 2 SPOTBUGS FIX
     }
 
     /**
@@ -438,10 +437,14 @@ public class Checkout {
     }
 
     public Map<String, Book> getInventory() {
-        return bookList;
+//          SER316 TASK 2 SPOTBUGS FIX
+
+        return new HashMap<>(bookList);
     }
 
     public Map<String, Patron> getPatrons() {
-        return patrons;
+//          SER316 TASK 2 SPOTBUGS FIX
+
+        return new HashMap<>(patrons);
     }
 }

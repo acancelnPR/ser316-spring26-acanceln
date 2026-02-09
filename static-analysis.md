@@ -52,24 +52,24 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Bugs found in main:** _____
+**Bugs found in main:** 7
 
 ### Bugs Fixed
 
-1. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+1. **Bug:** [bad practice - comparing using "==" instead of .equals()]
+   - **File:** [Checkout.java]
+   - **Location:** Line 347
+   - **Fix applied: replaced "==" with .equals()**
 
-2. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+2. **Bug:** [Malicious Code - exposing internal representation]
+   - **File:** [Checkout.java]
+   - **Location:** Line 441 & 445
+   - **Fix applied: removed those variables**
 
-3. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+3. **Bug:** [Performance - field never read]
+   - **File:** [Checkout.java]
+   - **Location:** Line 70 & 71
+   - **Fix applied: provided a clone of the map**
 
 ---
 
